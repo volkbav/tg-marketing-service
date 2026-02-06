@@ -1,5 +1,6 @@
 # Environments
-.env
+# файл .env временно исключен, для тестирования сборки из Dockerfile
+# .env
 .envrc
 .venv
 env/
@@ -31,7 +32,6 @@ test_session.*
 
 # local only
 telegram_session_string.py
-
 telegram_configuration
 
 django.log
