@@ -166,11 +166,41 @@ class DeleteGroupView(View):
         slug = kwargs['slug']
         group = get_object_or_404(Group, slug=slug)
         group.delete()
-        messages.success(request, 'Группа успешно удалена')
-        return redirect(reverse('users:profile'))
+        return inertia_render(request, 'Profiel', props={
+                "flash": {"success": 'Группа успешно удалена'}
+            })
 
 
 class GroupDetailView(View):
+    
+    """
+    Методы:
+    group.get_data выводит данные:
+            'id': self.id,
+            'name': self.name,
+            'slug': self.slug,
+            'description': self.description,
+            'owner': self.owner.username,
+            'is_editorial': self.is_editorial,
+            'order': self.order,
+            'image_url': self.image_url,
+            'created_at': self.created_at.isoformat()
+    
+    channels.get_data выводит данные:
+            'id': self.channel_id,
+            'username': self.username,
+            'title': self.title,
+            'description': self.description,
+            'participants_count': self.participants_count,
+            'parsed_at': self.parsed_at,
+            'pinned_messages': self.pinned_messages,
+            'creation_date': self.creation_date,
+            'last_messages': self.last_messages,
+            'average_views': self.average_views,
+            'category': self.category,
+            'country': self.country,
+            'language': self.language
+    """
     def get(self, request, *args, **kwargs):
         slug = kwargs['slug']
         group = get_object_or_404(Group, slug=slug)
@@ -189,8 +219,8 @@ class GroupDetailView(View):
             add_form = AddChannelForm(channel_qs=free_qs)
 
         return render(request, 'group_channels/detail.html', {
-            'group': group,
-            'channels': channels,
+            'group': group.get_data,
+            'channels': channels.get_data,
             'auto_category': auto_category,
             'add_form': add_form,
             'is_owner': is_owner,
@@ -198,9 +228,12 @@ class GroupDetailView(View):
 
 
 class AddChannelsView(UserAuthenticationCheckMixin, UserPassesTestMixin, View):
+    
+    """Кажеться это лишнее так как реализована аутентификайия с использованием django-guardian"""
     def test_func(self):
         self.group = get_object_or_404(Group, slug=self.kwargs['slug'])
         return self.group.owner == self.request.user
+
 
     def post(self, request, slug):
         free_qs = TelegramChannel.objects.exclude(groups=self.group)
