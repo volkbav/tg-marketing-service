@@ -19,6 +19,8 @@ from django.core.exceptions import ImproperlyConfigured
 from dotenv import load_dotenv
 import dj_database_url
 
+from .utils import env_bool
+
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -60,7 +62,7 @@ CELERY_BEAT_SCHEDULE = {
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
+DEBUG = env_bool("DEBUG", default=False)
 
 ALLOWED_HOSTS = ['*']
 
