@@ -218,7 +218,7 @@ class GroupDetailView(View):
             free_qs = TelegramChannel.objects.exclude(groups=group)
             add_form = AddChannelForm(channel_qs=free_qs)
 
-        return inertia_render(request, 'group_channels/detail.html', props={
+        return inertia_render(request, 'GroupDetail', props={
             'group': group.get_data,
             'channels': channels.get_data,
             'auto_category': auto_category,
