@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.text import slugify
 from unidecode import unidecode
+from django.core.validators import URLValidator
 
 from apps.users.models import User
 
@@ -44,7 +45,8 @@ class Group(models.Model):
         blank=True,
         related_name='groups',
     )
-    image_url = models.URLField(
+    image_url = models.TextField(
+        validators=[URLValidator()],
         blank=True,
         verbose_name='обложка группы',
     )
