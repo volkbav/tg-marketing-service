@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.text import slugify
 from unidecode import unidecode
+from django.core.validators import URLValidator
 
 from apps.users.models import User
 
@@ -44,7 +45,8 @@ class Group(models.Model):
         blank=True,
         related_name='groups',
     )
-    image_url = models.CharField(
+    image_url = models.TextField(
+        validators=[URLValidator()],
         blank=True,
         verbose_name='обложка группы',
     )
@@ -65,6 +67,23 @@ class Group(models.Model):
         if not self.slug or not self.slug.strip():
             self.slug = slugify(unidecode(self.name))
         super().save(*args, **kwargs)
+    
+    def get_data(self):
+        """
+        Метод возвращает представление данных группы в виде словаря,
+        пригодного для передачи на фронтенд (Inertia.js).
+        """
+        return {
+            'id': self.id,
+            'name': self.name,
+            'slug': self.slug,
+            'description': self.description,
+            'owner': self.owner.username,
+            'is_editorial': self.is_editorial,
+            'order': self.order,
+            'image_url': self.image_url,
+            'created_at': self.created_at.isoformat()
+        }
 
 
 class AutoGroupRule(models.Model):

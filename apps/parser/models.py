@@ -30,6 +30,27 @@ class TelegramChannel(models.Model):
 
     def __str__(self):
         return f"{self.channel_id} канал {self.title}"
+    
+    def get_data(self):
+        """
+        Метод возвращает представление данных канала в виде словаря,
+        пригодного для передачи на фронтенд (Inertia.js).
+        """
+        return {
+            'id': self.channel_id,
+            'username': self.username,
+            'title': self.title,
+            'description': self.description,
+            'participants_count': self.participants_count,
+            'parsed_at': self.parsed_at,
+            'pinned_messages': self.pinned_messages,
+            'creation_date': self.creation_date,
+            'last_messages': self.last_messages,
+            'average_views': self.average_views,
+            'category': self.category,
+            'country': self.country,
+            'language': self.language
+        }
 
 
 class ChannelModerator(models.Model):
