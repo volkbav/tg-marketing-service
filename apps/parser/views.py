@@ -22,7 +22,8 @@ from config.mixins import UserAuthenticationCheckMixin
 
 log = logging.getLogger(__name__)
 
-
+# --- рефакторинг класса под использование inercia ---
+# --- BEGIN ISSUE 169---
 class ParserView(UserAuthenticationCheckMixin, FormView):
     form_class = ChannelParseForm
     template_name = 'parser/parse_channel.html'
@@ -145,7 +146,7 @@ class ParserView(UserAuthenticationCheckMixin, FormView):
         except Exception as e:
             form.add_error(None, str(e))
             return self.form_invalid(form)
-
+# --- END ---
 
 class ParserListView(ListView):
     model = TelegramChannel
@@ -163,10 +164,10 @@ class ParserListView(ListView):
             }
         )
 
-
+# --- BEGIN ISSUE 169---
 class ParserDetailView(DetailView):
     model = TelegramChannel
     template_name = 'parser/channel_detail.html'
     context_object_name = "channel"
-
+# --- END ---
 # Create your views here.
