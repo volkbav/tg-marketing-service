@@ -21,6 +21,7 @@ from config.mixins import UserAuthenticationCheckMixin
 
 log = logging.getLogger(__name__)
 
+
 # --- рефакторинг класса под использование inercia ---
 # --- BEGIN ISSUE 169---
 class ParserView(UserAuthenticationCheckMixin, FormView):
@@ -52,7 +53,6 @@ class ParserView(UserAuthenticationCheckMixin, FormView):
         finally:
             await client.disconnect()
     
-
     def save_channel(self, data, request=None):
         """Create or update channel"""
         channel, created = TelegramChannel.objects.update_or_create(
@@ -147,6 +147,7 @@ class ParserView(UserAuthenticationCheckMixin, FormView):
             return self.form_invalid(form)
 # --- END ---
 
+
 class ParserListView(ListView):
     model = TelegramChannel
     token = 'TEMP_TOKEN'
@@ -162,6 +163,7 @@ class ParserListView(ListView):
                 "csrfToken": self.token,   
             }
         )
+
 
 # --- BEGIN ISSUE 169---
 class ParserDetailView(DetailView):
