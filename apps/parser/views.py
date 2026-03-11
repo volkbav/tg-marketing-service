@@ -3,21 +3,20 @@ import logging
 from asgiref.sync import async_to_sync
 from django.conf import settings
 from django.contrib import messages
-from django.core.exceptions import ImproperlyConfigured
-from django.core.exceptions import ObjectDoesNotExist
-
+from django.core.exceptions import (
+    ImproperlyConfigured,
+    ObjectDoesNotExist,
+)
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views.generic import DetailView, FormView, ListView
+from inertia import render as inertia_render
 from telethon import TelegramClient
 from telethon.sessions import StringSession
 
 from apps.parser.forms import ChannelParseForm
 from apps.parser.models import ChannelStats, TelegramChannel
 from apps.parser.parser import tg_parser
-
-from inertia import render as inertia_render
-
 from config.mixins import UserAuthenticationCheckMixin
 
 log = logging.getLogger(__name__)
